@@ -1,0 +1,30 @@
+{
+  "algo": "packrl",
+  "box": [6, 4, 4],
+  "items": [
+    { "id": 0, "dims": [3, 2, 2] },
+    { "id": 1, "dims": [3, 2, 2] },
+    { "id": 2, "dims": [2, 2, 2] },
+    { "id": 3, "dims": [4, 1, 2] },
+    { "id": 4, "dims": [4, 1, 2] },
+    { "id": 5, "dims": [3, 2, 4] },
+    { "id": 6, "dims": [3, 2, 2] },
+    { "id": 7, "dims": [3, 2, 3] }
+  ],
+  "steps": [
+    { "itemId": 0, "rot": 0, "pos": [0, 0, 0], "density": 12.5, "ms": 11 },
+    { "itemId": 1, "rot": 0, "pos": [3, 0, 0], "density": 25.0, "ms": 9 },
+    { "itemId": 2, "rot": 0, "pos": [0, 0, 2], "density": 33.3, "ms": 14 },
+    { "itemId": 3, "rot": 0, "pos": [2, 0, 2], "density": 41.7, "ms": 12 },
+    { "itemId": 4, "rot": 0, "pos": [2, 1, 2], "density": 50.0, "ms": 10 },
+    { "itemId": 5, "rot": 0, "pos": [0, 2, 0], "density": 75.0, "ms": 13 },
+    { "itemId": 6, "rot": 0, "pos": [3, 2, 0], "density": 87.5, "ms": 12 }
+  ],
+  "summary": {
+    "density": 87.5,
+    "void": 12.5,
+    "p95ms": 14.0,
+    "boxes": 1
+  },
+  "illustrative": true
+}

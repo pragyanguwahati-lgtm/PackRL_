@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0E1218;
+  --panel: #141A23;
+  --line: #222B38;
+  --text: #E6EBF2;
+  --muted: #8A96A8;
+  --teal: #00E5CC;
+  --orange: #E8A33D;
+  color-scheme: dark;
+}
+
+@theme {
+  --color-bg: #0E1218;
+  --color-panel: #141A23;
+  --color-line: #222B38;
+  --color-text: #E6EBF2;
+  --color-muted: #8A96A8;
+  --color-teal: #00E5CC;
+  --color-orange: #E8A33D;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.display-title {
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
