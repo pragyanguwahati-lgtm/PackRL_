@@ -2,7 +2,7 @@
 
 ## State
 * **Project:** PackRL_ · IEEE Hackathon 2026 · Track 03.2 · Team Tensor Bros
-* **Status:** `architecture.md` modernized; Phase M0, Phase 05/06 (Landing Page), and Phase 07 (Studio with dual synced viewports) completed; running on Next.js App Router on localhost:3000.
+* **Status:** `architecture.md` modernized; Phase M0, Phase 05/06 (Landing Page), and Phase 07 (Studio with dual synced viewports) completed; running on Next.js App Router on localhost:3000; pushed to GitHub (`main` -> https://github.com/pragyanguwahati-lgtm/PackRL_.git).
 * **Focus:** Next up: Phase 08 (How It Works & Results) and Phase 01 (Python Gymnasium environment).
 
 ## Decisions
