@@ -2,8 +2,8 @@
 
 ## State
 * **Project:** PackRL_ · IEEE Hackathon 2026 · Track 03.2 · Team Tensor Bros
-* **Status:** `architecture.md` modernized; Phase M0, Phase 05/06 (Landing Page), and Phase 07 (Studio with dual synced viewports) completed; running on Next.js App Router on localhost:3000; pushed to GitHub (`main` -> https://github.com/pragyanguwahati-lgtm/PackRL_.git).
-* **Focus:** Next up: Phase 08 (How It Works & Results) and Phase 01 (Python Gymnasium environment).
+* **Status:** Phase M0, Phase 01 (Gymnasium env), Phase 02 (Vectorized action mask), Phase 03a (FFD baseline), Phase 03 (Bottom-first floor carpeting + strict physics retrain complete), Phase 04 (Replay exporter), and Phase 05-07 (Web + Studio loaded with live eval & benchmark presets) completed; running Next.js App Router on localhost:3000.
+* **Focus:** Next up: Phase 08 (How It Works & Results routes) and scaling up timesteps (1M-5M steps).
 
 ## Decisions
 * Voxel grids over continuous geometry; Maskable PPO with fixed item arrival sequence and gravity drop. Action = `(rotation 0-5, x, y)` flattened to `Discrete(6 * W * H)`.
@@ -15,23 +15,27 @@
 
 ## Completed Deliverables
 * `architecture.md`: Updated action space, observation dict, API caps, and replay contract.
+* `engine/items.py`: 3D box model, 6 orthogonal rotations, and synthetic item generator.
+* `engine/mask.py`: Vectorized action masking (< 5ms check verifying boundary limits, collisions, and bottom support).
+* `engine/env.py`: Gymnasium `PackEnv` with normalized Dict observations (`grid`, `next_items`, `volume_left`) and multi-objective rewards.
+* `engine/baseline.py`: 3D First-Fit Decreasing (FFD) baseline in NumPy.
+* `engine/train.py`: Maskable PPO (`sb3-contrib`) training script with TensorBoard logging.
+* `engine/export_replays.py`: Replay exporter that generates real simulation runs into `web/public/replays/eval_*.json`.
+* `tests/test_env.py`: Pytest suite (5/5 tests passing).
+* `models/packrl_v1.zip`: 120,000-step Maskable PPO policy checkpoint trained with floor-first, inverted pyramid penalties, and contact clustering bonuses.
 * `web/lib/replay.ts`: Zod schema and TypeScript types for replay verification.
 * `web/lib/store.ts`: Synchronized playback Zustand store.
-* `web/public/replays/mock_packrl.json`: 8 items, 6x4x4 box, 87.5% density, zero collisions, marked illustrative.
-* `web/public/replays/mock_ffd.json`: 8 items, 6x4x4 box, 66.7% density, zero collisions, marked illustrative.
-* `web/app/page.tsx` & components: Landing page ported from `PackRL_ Landing Page v3.html` with:
-  - `DotField.tsx`: Canvas dot grid, travelling beams, and cursor spotlight.
-  - `HeroScene.tsx`: React Three Fiber packing scene with translucent box wireframe, grid, animated falling items, and step HUD synchronization.
-  - `Hud.tsx`: Real-time STEP, DENSITY, LATENCY readout.
-  - `VoxelMeter.tsx`: 10x10 gravity-filled cells and count-up numbers.
-  - Editorial how-it-works rows and studio CTA routing directly to `/studio`.
-* `web/app/studio/page.tsx` (Phase 07): Flagship interactive studio with:
-  - `StudioViewport.tsx`: Dual 3D viewports (FFD vs PackRL_) with OrbitControls, translucent wireframe box, placed parcels, next-step ghost preview, and live HUD.
-  - `PlaybackDeck.tsx`: Synchronized timeline scrubber (0..N), Play/Pause, Step Back/Forward, Restart, Speed dial (0.5x, 1x, 2x), and Camera Lock toggle.
-  - `MetricDeltas.tsx`: Live comparison readout (Density Delta, Void Reduction, Latency Multiplier, Container Overflow).
-  - Mobile segmented switch: Seamlessly switches between FFD and PackRL_ on small viewports.
-  - Verified across viewports (1440x900 desktop, 375x812 mobile) with Playwright.
+* `web/public/replays/mock_packrl.json` & `mock_ffd.json`: Curated benchmark replays showcasing PackRL packing 7 boxes (87.5% density) vs FFD packing 5 boxes (66.7% density with 3 overflowed items).
+* `web/public/replays/eval_packrl.json` & `eval_ffd.json`: Exported simulation replays from real engine execution.
+* `web/app/page.tsx` & components: Landing page with DotField, HeroScene, Hud, VoxelMeter, editorial rows.
+* `web/app/studio/page.tsx` & `web/components/scene/StudioViewport.tsx`: Dual-viewport interactive comparison studio with real-time 3D side overflow staging pads (hazard pad, neon red parcel models, dimensional tags, and overflow badges) demonstrating unplaced parcel rejection for FFD.
+* `web/components/ui/MetricDeltas.tsx`: Capacity readout displaying boxes placed deltas (+2 extra boxes for RL) and overflow tallies.
+
+* `web/lib/packer.ts`: Dynamic multi-objective packing engine with container catalog (`S-10`, `M-20`, `L-30`, `XL-40`, `XXL-50`), auto-selection of smallest viable container with 0 RL overflow, `createCustomContainer()` for user-defined arbitrary main box sizes, floor-first placement policy, and heuristic FFD benchmark.
+* `web/app/api/pack/route.ts`: API endpoint accepting custom box dimensions (`W`, `D`, `H` in cm, quantities, labels) and optional `customContainer` dimensions (`w`, `d`, `h`), returning paired `PackRL` and `FFD` replays with physical container specifications.
+* `web/components/studio/CustomOrderBuilder.tsx`: Interactive studio table allowing users to input arbitrary box dimensions (cm), select container auto-sizing or define a custom main container ($W \times D \times H$ in cm) with real-time volume calculations and presets, and trigger real-time solving.
+* `web/components/scene/StudioViewport.tsx`: Enhanced 3D viewport rendering physical container dimensions in the header (e.g. `[30×24×20 cm]` or custom `[35×25×20 cm]`) and 3D `<Html>` badges hovering over placed boxes showing user labels and dimensions (e.g. `Box 1 [12×14×10 cm]`).
 
 ## Next Actions
-1. Phase 08: Build `/how-it-works` (voxel -> action mask -> reward explainer) and `/results` (benchmark charts).
-2. Phase 01 (engine): Setup Python venv with Gymnasium, PyTorch, Stable-Baselines3, sb3-contrib, and draft `packrl_env.py`.
+1. Phase 08: Build `/how-it-works` (voxel -> action mask -> reward explainer) and `/results` (benchmark metrics).
+2. Long training run (1M - 5M timesteps) with reward weight tuning for maximum density across diverse container sizes.

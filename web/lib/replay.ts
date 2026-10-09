@@ -3,6 +3,8 @@ import { z } from "zod";
 export const ItemSchema = z.object({
   id: z.number(),
   dims: z.tuple([z.number(), z.number(), z.number()]),
+  label: z.string().optional(),
+  originalDims: z.tuple([z.number(), z.number(), z.number()]).optional(),
 });
 
 export const StepSchema = z.object({
@@ -30,6 +32,8 @@ export const ReplaySummarySchema = z.object({
 export const ReplaySchema = z.object({
   algo: z.enum(["ffd", "packrl"]),
   box: z.tuple([z.number(), z.number(), z.number()]),
+  boxCm: z.tuple([z.number(), z.number(), z.number()]).optional(),
+  containerName: z.string().optional(),
   items: z.array(ItemSchema),
   steps: z.array(StepSchema),
   summary: ReplaySummarySchema,

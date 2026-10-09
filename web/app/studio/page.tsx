@@ -5,6 +5,7 @@ import Link from "next/link";
 import { StudioViewport } from "@/components/scene/StudioViewport";
 import { MetricDeltas } from "@/components/ui/MetricDeltas";
 import { PlaybackDeck } from "@/components/ui/PlaybackDeck";
+import { CustomOrderBuilder } from "@/components/studio/CustomOrderBuilder";
 import { usePackStore } from "@/lib/store";
 import { validateReplay } from "@/lib/replay";
 
@@ -26,20 +27,46 @@ export default function StudioPage() {
   } = usePackStore();
 
   const [activeMobileView, setActiveMobileView] = useState<"ffd" | "packrl">("packrl");
-  const [selectedSeed, setSelectedSeed] = useState<number>(42);
+  const [selectedSeed, setSelectedSeed] = useState<number>(101);
   const [sharedCameraState, setSharedCameraState] = useState<{
     pos: [number, number, number];
     target: [number, number, number];
   } | null>(null);
 
+  // Parse initial query params (e.g. ?step=5 or ?seed=101)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const stepParam = params.get("step");
+      if (stepParam !== null && !isNaN(Number(stepParam))) {
+        setT(Number(stepParam));
+      }
+      const seedParam = params.get("seed");
+      if (seedParam !== null && !isNaN(Number(seedParam))) {
+        setSelectedSeed(Number(seedParam));
+      }
+    }
+  }, [setT]);
+
   // Load replays and Zod validate
   useEffect(() => {
     async function loadReplays() {
       try {
-        const [resFFD, resRL] = await Promise.all([
-          fetch("/replays/mock_ffd.json"),
-          fetch("/replays/mock_packrl.json"),
-        ]);
+        let resFFD: Response;
+        let resRL: Response;
+
+        if (selectedSeed === 42) {
+          resFFD = await fetch("/replays/eval_ffd.json");
+          resRL = await fetch("/replays/eval_packrl.json");
+          if (!resFFD.ok || !resRL.ok) {
+            resFFD = await fetch("/replays/mock_ffd.json");
+            resRL = await fetch("/replays/mock_packrl.json");
+          }
+        } else {
+          // Hand-curated 87% benchmark mock
+          resFFD = await fetch("/replays/mock_ffd.json");
+          resRL = await fetch("/replays/mock_packrl.json");
+        }
 
         if (resFFD.ok && resRL.ok) {
           const rawFFD = await resFFD.json();
@@ -52,11 +79,11 @@ export default function StudioPage() {
       }
     }
     loadReplays();
-  }, [setReplayFFD, setReplayRL]);
+  }, [selectedSeed, setReplayFFD, setReplayRL]);
 
   // Determine total steps
   const totalStepsFFD = replayFFD?.steps.length || 5;
-  const totalStepsRL = replayRL?.steps.length || 7;
+  const totalStepsRL = replayRL?.steps.length || 8;
   const maxSteps = Math.max(totalStepsFFD, totalStepsRL);
 
   // Auto-play interval
@@ -121,14 +148,17 @@ export default function StudioPage() {
             aria-label="Order seed selection"
             className="mono text-[11px] sm:text-xs bg-[var(--bg)] text-[var(--text)] border border-[var(--line)] rounded px-2 py-1 sm:px-2.5 sm:py-1.5 focus:outline-none focus:border-[var(--teal)] cursor-pointer max-w-[170px] sm:max-w-none truncate"
           >
-            <option value={42}>Seed #42: Mixed (8 items)</option>
-            <option value={101}>Seed #101: Hardware (12 items)</option>
+            <option value={101}>Seed #101: Hardware (PackRL 100% Fit vs FFD 3 Overflow)</option>
+            <option value={42}>Seed #42: Mixed Small (8 items)</option>
           </select>
         </div>
       </header>
 
       {/* Main Studio Viewport Area */}
       <main className="flex-1 flex flex-col p-3 sm:p-5 max-w-[1600px] w-full mx-auto gap-4">
+        {/* Interactive Custom Order Builder */}
+        <CustomOrderBuilder onPacked={() => resetClock()} />
+
         {/* Mobile Viewport Segmented Control */}
         <div className="flex md:hidden rounded-lg border border-[var(--line)] p-1 bg-[var(--panel)]">
           <button

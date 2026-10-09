@@ -123,21 +123,29 @@ export function MetricDeltas({
           </div>
         </div>
 
-        {/* Container Efficiency */}
+        {/* Container Efficiency & Fit */}
         <div>
           <div className="mono text-[11px] text-[var(--muted)] uppercase tracking-wider mb-1">
-            Container Fit
+            Boxes Packed (Capacity)
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="mono text-2xl font-bold text-[var(--text)]">
-              1 Box
+            <span className="mono text-2xl font-bold text-[var(--teal)]">
+              {currentStepRL} Placed
             </span>
-            <span className="mono text-sm text-[var(--muted)]">
-              {currentStepRL >= 7 ? "Contained" : "Packing"}
+            <span className="mono text-sm text-[var(--orange)] opacity-90">
+              vs {currentStepFFD} Placed
             </span>
           </div>
-          <div className="mono text-xs mt-1 text-[var(--muted)] text-[11px]">
-            FFD leaves {replayFFD?.items ? replayFFD.items.length - (replayFFD?.steps.length || 0) : 3} items unplaced
+          <div className="mono text-xs mt-1">
+            {currentStepRL > currentStepFFD ? (
+              <span className="text-[var(--teal)] font-medium">
+                +{currentStepRL - currentStepFFD} extra boxes packed by RL
+              </span>
+            ) : (
+              <span className="text-[var(--muted)] text-[11px]">
+                {replayFFD?.items ? replayFFD.items.length - (replayFFD?.steps.length || 0) : 3} FFD items overflowed on side
+              </span>
+            )}
           </div>
         </div>
       </div>
