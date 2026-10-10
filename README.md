@@ -243,10 +243,7 @@ PackRL_/
 │   │   └── ui/                   # MetricDeltas, VoxelMeter, HUD readouts
 │   └── lib/                      # State management (Zustand) & Client Packer solver
 ├── presentation_assets/          # Verification screenshots & visual benchmark captures
-├── tests/                        # Automated pytest suite for environment & physics
-├── architecture.md               # Detailed system design specification
-├── DESIGN.md                     # Design tokens & aesthetic style guide
-└── PRD.md                        # Product requirements & success metrics
+└── tests/                        # Automated pytest suite for environment & physics
 ```
 
 ---
