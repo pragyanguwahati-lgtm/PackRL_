@@ -10,7 +10,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **IEEE Hackathon 2026** · **Track 03.2: The Learned Loop**  
-> **Team:** Tensor Bros  
 > **Interactive Live Studio:** [`http://localhost:3000/studio`](http://localhost:3000/studio)
 
 ---
@@ -25,7 +24,7 @@
 7. [Verified Benchmark Cases & Results](#-verified-benchmark-cases--results)
 8. [Repository Structure](#-repository-structure)
 9. [Getting Started & Installation](#-getting-started--installation)
-10. [Team & Acknowledgments](#-team--acknowledgments)
+10. [Acknowledgments](#-acknowledgments)
 
 ---
 
@@ -304,9 +303,7 @@ In the Studio, use the **Custom Order Builder** to enter arbitrary item quantiti
 
 ---
 
-## 👥 Team & Acknowledgments
-
-- **Team:** Tensor Bros
-- **Lead / Developer:** Shaurya Singh
+## 🤝 Acknowledgments
+ 
 - **Event:** IEEE Hackathon 2026 · Track 03.2 (The Learned Loop)
 - **Built With:** PyTorch, Stable-Baselines3, Gymnasium, Next.js, React Three Fiber, Three.js, Tailwind CSS, Motion.

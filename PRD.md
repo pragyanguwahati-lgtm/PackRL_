@@ -1,5 +1,5 @@
 # Product Requirements Document (PRD)
-**Project:** PackRL_ · **Team:** Tensor Bros (Lead: Shaurya Singh) · **Event:** IEEE Hackathon 2026 · Track 03.2 (The Learned Loop)
+**Project:** PackRL_ · **Event:** IEEE Hackathon 2026 · Track 03.2 (The Learned Loop)
 
 ## 1. Objective
 Ship **PackRL_ Studio**: an immersive 3D website where anyone can watch a Deep RL agent pack a shipping box next to the classical 3D First-Fit Decreasing (FFD) heuristic, on the same order, step by step. The website is the primary product; the trained model is its engine.
