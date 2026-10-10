@@ -56,3 +56,6 @@ web/test-results/
 *.docx
 HACKATHON_PRESENTATION_SCRIPT.md
 
+# Knowledge Graph
+graphify-out/
+
